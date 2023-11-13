@@ -10,7 +10,7 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 
 /**
- * @author Emanuele B. (@emanueleb88)
+ * @author Emanuele Bellocchia (ebellocchia@gmail.com)
  * @title  Network node contract
  * @notice A network node can aggregate received ETH to a single address (aggregator node)
  *         or disgregate it among multiple addresses (disgregator node) depending on how

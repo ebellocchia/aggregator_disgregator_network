@@ -11,7 +11,7 @@ import "./NetworkNode.sol";
 
 
 /**
- * @author Emanuele B. (@emanueleb88)
+ * @author Emanuele Bellocchia (ebellocchia@gmail.com)
  * @title  Factory for network nodes
  * @notice It create a network of NetworkNode contracts
  */
