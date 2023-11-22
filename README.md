@@ -1,4 +1,8 @@
-# Introduction
+# Aggregator/Disgregator Network
+[![Build](https://github.com/ebellocchia/aggregator_disgregator_network/actions/workflows/build.yml/badge.svg)](https://github.com/ebellocchia/aggregator_disgregator_network/actions/workflows/build.yml)
+[![Test](https://github.com/ebellocchia/aggregator_disgregator_network/actions/workflows/test.yml/badge.svg)](https://github.com/ebellocchia/aggregator_disgregator_network/actions/workflows/test.yml)
+
+## Introduction
 
 Smart contract that creates a custom network of nodes that automatically transfers the received ETH among them and finally to some specified output addresses.\
 The network is completely customizable.
@@ -8,19 +12,19 @@ Funds got back from the network can also be sent again to the network again and 
 
 Clearly, this works well only on cheap EVM-compatible blockchains like Polygon.
 
-# Setup
+## Setup
 
 Install `yarn` if not installed:
 
     npm install -g yarn
 
-## Install package
+### Install package
 
 Simply run:
 
     npm i --include=dev
 
-## Compile
+### Compile
 
 - To compile the contract:
 
@@ -30,7 +34,7 @@ Simply run:
 
         yarn recompile
 
-## Run tests
+### Run tests
 
 - To run tests without coverage:
 
@@ -40,13 +44,13 @@ Simply run:
 
         yarn coverage
 
-## Deploy
+### Deploy
 
 To deploy the contract:
 
     yarn deploy <NETWORK>
 
-# Configuration
+## Configuration
 
 Hardhat is configured with the following networks:
 
@@ -64,9 +68,9 @@ Hardhat is configured with the following networks:
 The API keys, RPC nodes and mnemonic shall be configured in the `.env` file.\
 You may need to modify the gas limit and price in the Hardhat configuration file for some networks (e.g. Polygon), to successfully execute the transactions (you'll get a gas error).
 
-# How it works
+## How it works
 
-## "NetworkNode" smart contract
+### "NetworkNode" smart contract
 
 The `NetworkNode` is the contract that receives ETH and sends it to some output addresses.\
 The output addresses are fixed in the contract at cannot be changed anymore once initialized.
@@ -76,7 +80,7 @@ Depending on the number of output addresses, the node is called:
 - __Aggregator__ if the there is only one output address. This means that any received ETH is "aggregated" to one output address.
 - __Disgregator__ if the there is more than one output address. This means that any received ETH is "disgregated" amount multiple output addresses.
 
-## "NetworkFactory" smart contract
+### "NetworkFactory" smart contract
 
 The `NetworkFactory` allows deploying `NetworkNode` contracts. It can both deploy single nodes or a layer of nodes.
 
@@ -108,7 +112,7 @@ ___
     function createAggregatorLayer(
         address payable[] memory outputAddresses_,
         uint256 layersMul_
-    ) public onlyOwner returns (address payable[] memory) 
+    ) public onlyOwner returns (address payable[] memory)
 
 Deploy a layer of `NetworkNode` contracts behaving as aggregators.\
 The number of nodes in the layer will be the length of `outputAddresses_` multiplied by `layersMul_`. The minimum `layersMul_` value is 1.\
@@ -129,3 +133,7 @@ ___
 Deploy a layer of `NetworkNode` contracts behaving as disgregators.\
 The number of nodes in the layer will be the length of `outputAddresses_` divided by `layersMul_`. The minimum `layersMul_` value is 1.\
 Each node will have `outputAddresses_` as output addresses.
+
+# License
+
+This software is available under the MIT license.
