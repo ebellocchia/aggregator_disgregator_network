@@ -21,15 +21,20 @@ describe("NetworkFactory", () => {
 
   it("should revert if functions are not called by the owner", async () => {
     const not_owner_account: Signer = test_ctx.accounts.signers[0];
+    const not_owner_address: string = await not_owner_account.getAddress();
 
     await expect(test_ctx.network_factory.connect(not_owner_account).cloneAggregatorNode(constants.NULL_ADDRESS))
-      .to.be.revertedWith("Ownable: caller is not the owner");
+      .to.be.revertedWithCustomError(test_ctx.network_factory, "OwnableUnauthorizedAccount")
+      .withArgs(not_owner_address);
     await expect(test_ctx.network_factory.connect(not_owner_account).cloneDisgregatorNode([constants.NULL_ADDRESS]))
-      .to.be.revertedWith("Ownable: caller is not the owner");
+      .to.be.revertedWithCustomError(test_ctx.network_factory, "OwnableUnauthorizedAccount")
+      .withArgs(not_owner_address);
     await expect(test_ctx.network_factory.connect(not_owner_account).createAggregatorLayer([constants.NULL_ADDRESS], 1))
-      .to.be.revertedWith("Ownable: caller is not the owner");
+      .to.be.revertedWithCustomError(test_ctx.network_factory, "OwnableUnauthorizedAccount")
+      .withArgs(not_owner_address);
     await expect(test_ctx.network_factory.connect(not_owner_account).createDisgregatorLayer([constants.NULL_ADDRESS], 1))
-      .to.be.revertedWith("Ownable: caller is not the owner");
+      .to.be.revertedWithCustomError(test_ctx.network_factory, "OwnableUnauthorizedAccount")
+      .withArgs(not_owner_address);
   });
 
   it("should clone an aggregator node", async () => {

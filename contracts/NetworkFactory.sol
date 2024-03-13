@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 //=============================================================//
 //                           IMPORTS                           //
 //=============================================================//
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/proxy/Clones.sol";
-import "./NetworkNode.sol";
+import {Clones} from  "@openzeppelin/contracts/proxy/Clones.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {NetworkNode} from "./NetworkNode.sol";
 
 
 /**
@@ -15,8 +15,8 @@ import "./NetworkNode.sol";
  * @title  Factory for network nodes
  * @notice It create a network of NetworkNode contracts
  */
-contract NetworkFactory is 
-    Ownable 
+contract NetworkFactory is
+    Ownable
 {
     //=============================================================//
     //                          CONSTANTS                          //
@@ -102,11 +102,11 @@ contract NetworkFactory is
     //=============================================================//
     //                         FUNCTIONS                           //
     //=============================================================//
-    
-    /** 
+
+    /**
      * Constructor
      */
-    constructor() {
+    constructor() Ownable(_msgSender()) {
         __createParentContract();
     }
 
@@ -124,7 +124,7 @@ contract NetworkFactory is
             revert InvalidLayersMulError();
         }
         if (outputAddresses_.length == 0) {
-            revert InvalidNodesNumError(); 
+            revert InvalidNodesNumError();
         }
 
         uint256 tot_nodes = outputAddresses_.length * layersMul_;
@@ -158,7 +158,7 @@ contract NetworkFactory is
 
         uint256 tot_nodes = outputAddresses_.length / layersMul_;
         if (tot_nodes == 0) {
-           revert InvalidNodesNumError(); 
+           revert InvalidNodesNumError();
         }
 
         NetworkNode[] memory layer = new NetworkNode[](tot_nodes);

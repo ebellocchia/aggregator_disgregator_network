@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 //=============================================================//
 //                           IMPORTS                           //
 //=============================================================//
-import "@openzeppelin/contracts/utils/Address.sol";
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import {Address} from "@openzeppelin/contracts/utils/Address.sol";
+import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 
 /**
@@ -24,7 +24,7 @@ contract NetworkNode is
     //=============================================================//
     //                           STORAGE                           //
     //=============================================================//
-    
+
     /// Output addresses
     address payable[] public outputAddresses;
 
@@ -57,7 +57,7 @@ contract NetworkNode is
             revert NullOutputAddressError();
         }
         outputAddresses = [outputAddress_];
-        __Ownable_init();
+        __Ownable_init(_msgSender());
     }
 
     /**
@@ -77,7 +77,7 @@ contract NetworkNode is
         }
 
         outputAddresses = outputAddresses_;
-        __Ownable_init();
+        __Ownable_init(_msgSender());
     }
 
     /**
@@ -134,7 +134,7 @@ contract NetworkNode is
         uint256 rem_amount = msg.value % outputAddresses.length;
         uint256 split_amount = msg.value / outputAddresses.length;
 
-        // Transfer the split amount plus the remainder to the first address 
+        // Transfer the split amount plus the remainder to the first address
         outputAddresses[0].sendValue(split_amount + rem_amount);
         // Transfer the split amount to all others
         for (uint256 i = 1; i < outputAddresses.length; i++) {

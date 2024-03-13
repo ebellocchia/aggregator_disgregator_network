@@ -48,7 +48,7 @@ describe("NetworkNode", () => {
     );
   });
 
-  it("should aggregate received ETH if initialized", async () => {    
+  it("should aggregate received ETH if initialized", async () => {
     const initial_amount: BigNumber = await output_accounts[0].getBalance();
     const eth_amount: BigNumber = hre.ethers.utils.parseEther("1.0");
 
@@ -62,7 +62,7 @@ describe("NetworkNode", () => {
       .to.equal(initial_amount.add(eth_amount));
   });
 
-  it("should disgregate received ETH if initialized", async () => {    
+  it("should disgregate received ETH if initialized", async () => {
     const initial_amounts: BigNumber[] = [];
     for (let i = 0; i < output_addresses.length; i++) {
       initial_amounts.push(await output_accounts[i].getBalance());
@@ -79,7 +79,7 @@ describe("NetworkNode", () => {
     });
 
     for (let i = 0; i < output_addresses.length; i++) {
-      const amount: BigNumber = i == 0 ? initial_amounts[i].add(split_amount).add(rem_amount) : 
+      const amount: BigNumber = i == 0 ? initial_amounts[i].add(split_amount).add(rem_amount) :
                                          initial_amounts[i].add(split_amount);
       expect(await output_accounts[i].getBalance())
         .to.equal(amount);
@@ -89,25 +89,25 @@ describe("NetworkNode", () => {
   it("should revert if initialized more than once (aggregator)", async () => {
     await test_ctx.network_node.initAsAggregator(output_addresses[0]);
     await expect(test_ctx.network_node.initAsAggregator(output_addresses[0]))
-      .to.be.revertedWith("Initializable: contract is already initialized");
+      .to.be.revertedWithCustomError(test_ctx.network_node, "InvalidInitialization");
   });
 
   it("should revert if initialized more than once (disgregator)", async () => {
     await test_ctx.network_node.initAsDisgregator(output_addresses);
     await expect(test_ctx.network_node.initAsDisgregator(output_addresses))
-      .to.be.revertedWith("Initializable: contract is already initialized");
+      .to.be.revertedWithCustomError(test_ctx.network_node, "InvalidInitialization");
   });
 
   it("should revert if initialized more than once (disgregator + aggregator)", async () => {
     await test_ctx.network_node.initAsDisgregator(output_addresses);
     await expect(test_ctx.network_node.initAsAggregator(output_addresses[0]))
-      .to.be.revertedWith("Initializable: contract is already initialized");
+      .to.be.revertedWithCustomError(test_ctx.network_node, "InvalidInitialization");
   });
 
   it("should revert if initialized more than once (aggregator + disgregator)", async () => {
     await test_ctx.network_node.initAsAggregator(output_addresses[0]);
     await expect(test_ctx.network_node.initAsDisgregator(output_addresses))
-      .to.be.revertedWith("Initializable: contract is already initialized");
+      .to.be.revertedWithCustomError(test_ctx.network_node, "InvalidInitialization");
   });
 
   it("should revert if initializing an aggregator with null address", async () => {
